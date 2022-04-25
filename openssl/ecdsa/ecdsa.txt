@@ -1,0 +1,14 @@
+# generate keys
+openssl ecparam -name prime256v1 -genkey -noout -out private-key.pem
+openssl ec -in private-key.pem -pubout -out public-key.pem
+
+# sign 
+openssl dgst -sha512 -sign private-key.pem -out signature.txt message.txt
+
+# base64 enccode&decode
+openssl base64 -in signature.txt -out signature-encoded.txt
+openssl base64 -d -in signature-encoded.txt -out signature.txt
+
+# verify
+openssl dgst -sha512 -verify public-key.pem -signature signature.txt message.txt
+
